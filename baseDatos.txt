@@ -1,0 +1,62 @@
+CREATE DATABASE gestion_eventos;
+
+CREATE TABLE evento (
+    id_evento SERIAL PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    descripcion TEXT NULL,
+    fecha_inicio DATE NOT NULL,
+    hora TIME NOT NULL,
+    fecha_fin DATE NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    ubicacion VARCHAR(150) NOT NULL
+);
+
+CREATE TABLE asistente (
+    id_asistente SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    apellidoP VARCHAR(50) NOT NULL,
+    apellidoM VARCHAR(50) NOT NULL,
+    correo VARCHAR(150) UNIQUE NOT NULL,
+    telefono VARCHAR(15) NULL
+);
+
+CREATE TABLE inscripcion (
+    id_inscripcion SERIAL PRIMARY KEY,
+    id_evento INT REFERENCES evento(id_evento) ON DELETE CASCADE,
+    id_asistente INT REFERENCES asistente(id_asistente) ON DELETE CASCADE,
+    fecha_inscripcion DATE DEFAULT CURRENT_DATE,
+    UNIQUE (id_evento, id_asistente)
+);
+
+CREATE TABLE entrada (
+    id_entrada SERIAL PRIMARY KEY,
+    id_inscripcion INT REFERENCES inscripcion(id_inscripcion) ON DELETE CASCADE,
+    fecha_compra DATE DEFAULT CURRENT_DATE,
+    metodo_pago VARCHAR(50) CHECK (metodo_pago IN ('tarjeta', 'paypal', 'efectivo', 'transferencia')),
+    UNIQUE (id_inscripcion)
+);
+
+CREATE TABLE proveedor (
+    id_proveedor SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    servicio VARCHAR(50) NOT NULL,
+    telefono VARCHAR(20) NULL,
+    correo VARCHAR(150) UNIQUE NOT NULL
+);
+
+CREATE TABLE eventos_proveedores (
+    id SERIAL PRIMARY KEY,
+    id_evento INT REFERENCES evento(id_evento) ON DELETE CASCADE,
+    id_proveedor INT REFERENCES proveedor(id_proveedor) ON DELETE CASCADE,
+    monto_contrato DECIMAL(10,2) NOT NULL,
+    descripcion TEXT NULL
+);
+
+CREATE TABLE comunicacion (
+    id_comunicacion SERIAL PRIMARY KEY,
+    id_asistente INT REFERENCES asistente(id_asistente) ON DELETE CASCADE,
+    id_evento INT REFERENCES evento(id_evento) ON DELETE CASCADE,
+    tipo VARCHAR(50) CHECK (tipo IN ('notificacion', 'recordatorio')) NOT NULL,
+    mensaje TEXT NOT NULL,
+    fecha_envio DATE DEFAULT CURRENT_DATE
+);
