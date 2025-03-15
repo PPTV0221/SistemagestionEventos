@@ -1,5 +1,5 @@
 
-<h1> Sistema de gstión de eventos - Java  <h1> <br> 
+<h1> Sistema de gestión de eventos - Java  <h1> <br> 
 <h2>Integrantes: <br>
 -Yata Belinda <br>
 -Carreño Victor<h2> 
@@ -22,3 +22,5 @@ Tecnologías utilizadas:<br>
 🔹 Seguridad: Autenticación con Spring Security y JWT. <br>
 
 Este sistema busca optimizar la gestión de eventos, reduciendo el esfuerzo manual y mejorando la experiencia de organizadores y asistentes. 🚀 <h3>
+
+Diseño de BD 
